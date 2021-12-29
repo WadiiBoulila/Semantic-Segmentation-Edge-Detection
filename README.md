@@ -11,12 +11,12 @@ This repository is of the network designed to segment roads and road edges in Hi
 ### Usage
 * Clone the Repository:
 ```ruby
-git clone https://github.com/WadiiBoulila/Semantic-Segmentation-Edge-Detection.git
+  git clone https://github.com/WadiiBoulila/Semantic-Segmentation-Edge-Detection.git
 ```
 * Data:
 change the data_path in the `train.py` file.
 
 * Train the model:
 ```ruby
-python train.py
+  python train.py
 ```

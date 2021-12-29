@@ -212,17 +212,21 @@ class Network(nn.Module):
     def __init__(self, classes):
         super(Network, self).__init__()
         self.classes = classes
-        
         self.encoder = Encoder()
         self.segmentation = segmentation_block(32, self.classes)
-        self.Edge_detection = edge_block(32, self.classes)
 
     
     def forward(self, x):
         x = self.encoder(x)
-
         seg_map = self.segmentation(x)
+        return seg_map, x
+
+class Edge_Network(nn.Module):
+    def __init__(self, classes):
+        super(Edge_Network, self).__init__()
+        self.classes = classes
+        self.Edge_detection = edge_block(32, self.classes)
+        
+    def forward(self, x, seg_map):
         edge_map = self.Edge_detection(x, seg_map)
-
-
-        return seg_map, edge_map
+        return edge_map

@@ -112,22 +112,17 @@ class TverskyCrossEntropyDiceWeightedLoss(nn.Module):
     
 
     
-    def forward(self, pred, target, pred_edges, target_edges):
+    def forward(self, pred, target):
         if self.cel + self.ftl != 1:
             raise ValueError('Cross Entropy weight and Tversky weight should sum to 1')
         
         loss_seg = nn.CrossEntropyLoss(weight = self.weights(pred, target).cuda())
-        loss_edge = nn.CrossEntropyLoss(weight = self.weights(pred_edges, target_edges).cuda())
-        
+                
         ce_seg = loss_seg(pred, target)
-        ce_edges = loss_edge(pred_edges, target_edges)
+        
 
         tv = self.tversky_loss(target, pred, alpha=self.alpha, beta=self.beta)
-        tv_edge = self.tversky_loss(target_edges, pred_edges, alpha=self.alpha, beta=self.beta)
-
-        loss_seg = (self.cel * ce_seg) + (self.ftl * tv)
-        loss_edges = (self.cel * ce_edges) + (self.ftl * tv_edge)
-
-        total_loss = loss_seg + loss_edges
+        
+        total_loss = (self.cel * ce_seg) + (self.ftl * tv)
 
         return total_loss

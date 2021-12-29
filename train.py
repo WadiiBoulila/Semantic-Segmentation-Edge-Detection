@@ -14,6 +14,7 @@ val_loader = DataLoader(val_set, batch_size = 5, shuffle = True, num_workers = 0
 
 
 model = Network(2)
+edge_model = Edge_Network(2)
 
 model.cuda()
 
@@ -30,6 +31,7 @@ for epoch in range(0, epochs):
 
   
   optimizer = torch.optim.Adam(model.parameters(), lr=lrr, weight_decay=1e-3)
+  edge_optimizer = torch.optim.Adam(edge_model.parameters(), lr=lrr, weight_decay=1e-3)
 
   total_train_loss = 0
   total_train_miou = 0
@@ -54,10 +56,16 @@ for epoch in range(0, epochs):
     train_x, train_y, train_edge = train_x.cuda(), train_y.cuda(), train_edge.cuda()
 
     optimizer.zero_grad()
+    edge_optimizer.zero_grad()
 
-    mask, edge = model(train_x)
+    mask, x = model(train_x)
+    loss = loss_function(mask, train_y)
 
-    loss = loss_function(mask, train_y, edge, train_edge)
+    x = x.detach()
+    mask = mask.detach()
+    edge = edge_model(x, mask)
+
+    edge_loss = loss_function(edge, train_edge)
 
     train_loss += loss.item()
 
@@ -72,6 +80,8 @@ for epoch in range(0, epochs):
 
     loss.backward()
     optimizer.step()
+    edge_loss.backward()
+    edge_optimizer.step()
 
     total_train_loss += train_loss
     total_train_miou += train_miou
@@ -89,10 +99,10 @@ for epoch in range(0, epochs):
     model.eval()
     val_x, val_y, val_edge= sample
     val_x, val_y = val_x.cuda(), val_y.cuda(), val_edge.cuda()
-    optimizer.zero_grad()
 
     with torch.no_grad():
-      mask = model(val_x)
+      mask, x = model(val_x)
+      edge = edge_model(x, mask)
       
     mask = torch.argmax(mask.squeeze(), dim=1).detach().cpu().numpy()
     val_y = val_y.squeeze().detach().cpu()

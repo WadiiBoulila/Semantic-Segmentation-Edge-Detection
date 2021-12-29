@@ -7,6 +7,6 @@
 
 ### Usage
 * Clone the Repository:
-'''ruby
+```ruby
 git clone https://github.com/WadiiBoulila/Semantic-Segmentation-Edge-Detection.git
-'''
+```

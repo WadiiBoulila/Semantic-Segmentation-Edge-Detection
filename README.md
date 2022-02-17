@@ -22,3 +22,25 @@ change the data_path in the `train.py` file.
 ```ruby
   python train.py
 ```
+
+### Dataset Details
+Remotesensing image were taken from Riyadah, Jeddah and Dammam and were cropped into 512x512 images. These images were then labeled using VGG Image Annotator. The images and the corresponding labeled mask was then used to train and test the network.
+
+### Citation
+
+If you use any part of this work please cite using the following Bibtex format:
+```
+@Article{rs14030613,
+AUTHOR = {Ghandorh, Hamza and Boulila, Wadii and Masood, Sharjeel and Koubaa, Anis and Ahmed, Fawad and Ahmad, Jawad},
+TITLE = {Semantic Segmentation and Edge Detection&mdash;Approach to Road Detection in Very High Resolution Satellite Images},
+JOURNAL = {Remote Sensing},
+VOLUME = {14},
+YEAR = {2022},
+NUMBER = {3},
+ARTICLE-NUMBER = {613},
+URL = {https://www.mdpi.com/2072-4292/14/3/613},
+ISSN = {2072-4292},
+DOI = {10.3390/rs14030613}
+}
+
+'''

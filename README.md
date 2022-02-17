@@ -28,6 +28,7 @@ Remotesensing image were taken from Riyadah, Jeddah and Dammam and were cropped 
 
 ### Model Details
 This model uses a hybrid encoder that encodes both high resolution features and low resolution semantic features. The structure of the encoder is shown below:
+
 ![alt text](https://www.mdpi.com/remotesensing/remotesensing-14-00613/article_deploy/html/images/remotesensing-14-00613-g002-550.jpg)
 
 The network then uses the encoded features in a cascaded manner to predict both the road segmentation masks and the road edges.
